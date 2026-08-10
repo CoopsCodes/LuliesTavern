@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { flushSync } from "react-dom";
 import { loginWithPin } from "./actions";
 import { StaffMember } from "./types";
 
@@ -28,16 +29,25 @@ export function PinNumberForm({
   const pinFormRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
-    if (pin.length === 4 && !pinPending) {
-      pinFormRef.current?.requestSubmit();
+    if (pinState?.error) {
+      setPin("");
     }
-  }, [pin, pinPending]);
+  }, [pinState]);
+
   function pressKey(key: string) {
     if (pinPending || !key) return;
     if (key === "⌫") {
       setPin((p) => p.slice(0, -1));
-    } else if (pin.length < 4) {
-      setPin((p) => p + key);
+      return;
+    }
+    if (pin.length >= 4) return;
+
+    const next = pin + key;
+    if (next.length === 4) {
+      flushSync(() => setPin(next));
+      pinFormRef.current?.requestSubmit();
+    } else {
+      setPin(next);
     }
   }
 
