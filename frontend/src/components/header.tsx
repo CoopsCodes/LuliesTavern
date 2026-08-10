@@ -4,8 +4,8 @@ import type { CurrentUser } from "@/lib/session";
 export function Header({ user }: { user: CurrentUser }) {
   return (
     <header className="flex items-center justify-between bg-bg-header px-7 py-[18px]">
-      <div>
-        <h1 className="font-heading text-[26px] font-bold text-accent-green">Lulies Tavern</h1>
+      <div className="text-center">
+        <h1 className="neon-sign text-[30px] leading-none">Lulie St Tavern</h1>
         <p className="text-[13px] font-medium uppercase tracking-[1.5px] text-text-secondary">
           Member Badge Draws
         </p>
